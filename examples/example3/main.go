@@ -14,7 +14,7 @@ import (
 
 func main() {
 	engine := engine.NewHEEngine(config.NewParameters(16, 11, 40, true))
-	EVAL_NUM, B := 10, 20.0
+	EVAL_NUM, B := 10, 50.0
 	ageSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 0)
 	hpwSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 12)
 	eduSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 4)
@@ -61,7 +61,7 @@ func main() {
 	for i := 0; i < int(EVAL_NUM); i++ {
 		fmt.Println("[============ Age Test ============]")
 		TIME := time.Now()
-		zScoreNorm1, _ := engine.ZScoreNorm(age, 100.0)
+		zScoreNorm1, _ := engine.ZScoreNorm(age, B)
 		AGE_ZNORM_TIME := time.Since(TIME)
 		zSNAge, _ := engine.Decrypt(zScoreNorm1)
 
