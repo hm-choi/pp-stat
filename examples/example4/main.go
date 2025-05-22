@@ -23,7 +23,7 @@ func main() {
 		chargeSlice[i] = chargeSlice[i] / 1000.0
 	}
 
-	EVAL_NUM := 10
+	EVAL_NUM, B := 10, 20.0
 	CG_ZSCORE_MRE, CG_ZSCORE_MAE, CG_ZSCORE_TIME := make([]float64, EVAL_NUM), make([]float64, EVAL_NUM), make([]float64, EVAL_NUM)
 	CG_KURT_MRE, CG_KURT_MAE, CG_KURT_TIME := make([]float64, EVAL_NUM), make([]float64, EVAL_NUM), make([]float64, EVAL_NUM)
 	CG_SKEW_MRE, CG_SKEW_MAE, CG_SKEW_TIME := make([]float64, EVAL_NUM), make([]float64, EVAL_NUM), make([]float64, EVAL_NUM)
@@ -51,7 +51,7 @@ func main() {
 
 	for i := 0; i < int(EVAL_NUM); i++ {
 		TIME = time.Now()
-		zNormCharge, _ := engine.ZScoreNorm(charge)
+		zNormCharge, _ := engine.ZScoreNorm(charge, 100.0)
 		CHARGE_ZNORM_TIME := time.Since(TIME)
 		zSNcharge, _ := engine.Decrypt(zNormCharge)
 
@@ -64,7 +64,7 @@ func main() {
 		fmt.Println("Charge ZNorm", zScoreMaeCharge, zScoreMreCharge, CHARGE_ZNORM_TIME)
 
 		TIME = time.Now()
-		skewCharge, _ := engine.Skewness(charge)
+		skewCharge, _ := engine.Skewness(charge, B)
 		CHARGE_SKEW_TIME := time.Since(TIME)
 		skCharge, _ := engine.Decrypt(skewCharge)
 		CG_SKEW_MRE[i] = math.Abs(skCharge[0]-skew_cg) / math.Abs(skew_cg)
@@ -73,7 +73,7 @@ func main() {
 		fmt.Println("Charge skewResult", skCharge[0], math.Abs(skCharge[0]-skew_cg), math.Abs(skCharge[0]-skew_cg)/math.Abs(skew_cg), CHARGE_SKEW_TIME)
 
 		TIME = time.Now()
-		kurtCharge, _ := engine.Kurtosis(charge)
+		kurtCharge, _ := engine.Kurtosis(charge, B)
 		CHARGE_KURT_TIME := time.Since(TIME)
 		ktCharge, _ := engine.Decrypt(kurtCharge)
 		CG_KURT_MRE[i] = math.Abs(ktCharge[0]-kurt_cg) / math.Abs(kurt_cg)
@@ -82,7 +82,7 @@ func main() {
 		fmt.Println("BCharge kurtResult", ktCharge[0], math.Abs(ktCharge[0]-kurt_cg), math.Abs(ktCharge[0]-kurt_cg)/math.Abs(kurt_cg), CHARGE_KURT_TIME)
 
 		TIME = time.Now()
-		cvCharge, _ := engine.CoeffVar(charge)
+		cvCharge, _ := engine.CoeffVar(charge, B)
 		CHARGE_CV_TIME := time.Since(TIME)
 		cCharge, _ := engine.Decrypt(cvCharge)
 		CG_CV_MRE[i] = math.Abs(cCharge[0]-cv_cg) / math.Abs(cv_cg)
@@ -92,7 +92,7 @@ func main() {
 
 		_, corrr1, _ := utils.Correlation(ageSlice, chargeSlice)
 		TIME = time.Now()
-		corr, _ := engine.PCorrCoeff(age, charge)
+		corr, _ := engine.PCorrCoeff(age, charge, B)
 		AGE_CG_TIME := time.Since(TIME)
 		corrResult, _ := engine.Decrypt(corr)
 		AGE_CG_CORR_MAE[i] = math.Abs(corrResult[0] - corrr1)
@@ -102,7 +102,7 @@ func main() {
 
 		_, corrr2, _ := utils.Correlation(bmiSlice, chargeSlice)
 		TIME = time.Now()
-		corr2, _ := engine.PCorrCoeff(bmi, charge)
+		corr2, _ := engine.PCorrCoeff(bmi, charge, B)
 		BMI_CG_TIME := time.Since(TIME)
 		corrResult2, _ := engine.Decrypt(corr2)
 		BMI_CG_CORR_MAE[i] = math.Abs(corrResult2[0] - corrr2)
@@ -112,7 +112,7 @@ func main() {
 
 		_, corrr3, _ := utils.Correlation(smokerSlice, chargeSlice)
 		TIME = time.Now()
-		corr3, _ := engine.PCorrCoeff(smoker, charge)
+		corr3, _ := engine.PCorrCoeff(smoker, charge, B)
 		SMOKER_CG_TIME := time.Since(TIME)
 		corrResult3, _ := engine.Decrypt(corr3)
 		SMOKER_CG_CORR_MAE[i] = math.Abs(corrResult3[0] - corrr3)

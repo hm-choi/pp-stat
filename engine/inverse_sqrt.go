@@ -109,8 +109,7 @@ func (e *HEEngine) HENewtonInv(ct, init *HEData, B float64, iter, mode int) (*HE
 	return y, nil
 }
 
-func (e *HEEngine) CryptoInvSqrt(ct *HEData) (*HEData, error) {
-	//	B := math.Pow(2.0, 4)
+func (e *HEEngine) CryptoInvSqrt(ct *HEData, B float64) (*HEData, error) {
 	y, err := e.ChebyshevInvSqrt(ct, 1, B)
 	if err != nil {
 		return y, err

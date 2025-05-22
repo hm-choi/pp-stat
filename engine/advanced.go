@@ -7,9 +7,7 @@ import (
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 )
 
-var B = 100.0
-
-func (e *HEEngine) ZScoreNorm(ct *HEData) (*HEData, error) {
+func (e *HEEngine) ZScoreNorm(ct *HEData, B float64) (*HEData, error) {
 	const (
 		chebyshevDegree = 2 // Degree for initial Chebyshev approximation
 		newtonIter      = 5 // Iteration count for Newton refinement
@@ -86,7 +84,7 @@ func (e *HEEngine) ZScoreNorm(ct *HEData) (*HEData, error) {
 	return zscore, nil
 }
 
-func (e *HEEngine) Kurtosis(ct *HEData) (*HEData, error) {
+func (e *HEEngine) Kurtosis(ct *HEData, B float64) (*HEData, error) {
 	const (
 		chebyshevDegree = 2
 		newtonIter      = 5
@@ -196,7 +194,7 @@ func (e *HEEngine) Kurtosis(ct *HEData) (*HEData, error) {
 	return kurtosis, nil
 }
 
-func (e *HEEngine) Skewness(ct *HEData) (*HEData, error) {
+func (e *HEEngine) Skewness(ct *HEData, B float64) (*HEData, error) {
 	const (
 		chebyshevDegree = 2
 		newtonIter      = 5
@@ -299,7 +297,7 @@ func (e *HEEngine) Skewness(ct *HEData) (*HEData, error) {
 	return skewness, nil
 }
 
-func (e *HEEngine) CoeffVar(ct *HEData) (*HEData, error) {
+func (e *HEEngine) CoeffVar(ct *HEData, B float64) (*HEData, error) {
 	const (
 		chebyshevDegree = 2
 		newtonIter      = 2
@@ -422,7 +420,7 @@ func (e *HEEngine) CoeffVar(ct *HEData) (*HEData, error) {
 	return cv, nil
 }
 
-func (e *HEEngine) PCorrCoeff(ct1, ct2 *HEData) (*HEData, error) {
+func (e *HEEngine) PCorrCoeff(ct1, ct2 *HEData, B float64) (*HEData, error) {
 	const (
 		chebyshevDegree = 2
 		newtonIter      = 6
@@ -461,13 +459,13 @@ func (e *HEEngine) PCorrCoeff(ct1, ct2 *HEData) (*HEData, error) {
 	}
 
 	// Step 4: Compute inverse std for X
-	invStdX, err := e.computeInvStd(ct1, chebyshevDegree, newtonIter, newtonScale, bootstrapDepth)
+	invStdX, err := e.computeInvStd(ct1, chebyshevDegree, newtonIter, newtonScale, bootstrapDepth, B)
 	if err != nil {
 		return nil, fmt.Errorf("computeInvStd (X): %w", err)
 	}
 
 	// Step 5: Compute inverse std for Y
-	invStdY, err := e.computeInvStd(ct2, chebyshevDegree, newtonIter, newtonScale, bootstrapDepth)
+	invStdY, err := e.computeInvStd(ct2, chebyshevDegree, newtonIter, newtonScale, bootstrapDepth, B)
 	if err != nil {
 		return nil, fmt.Errorf("computeInvStd (Y): %w", err)
 	}
@@ -491,7 +489,7 @@ func (e *HEEngine) PCorrCoeff(ct1, ct2 *HEData) (*HEData, error) {
 	return pcc, nil
 }
 
-func (e *HEEngine) computeInvStd(ct *HEData, chebDeg, newtonIter, newtonScale, bootstrapDepth int) (*HEData, error) {
+func (e *HEEngine) computeInvStd(ct *HEData, chebDeg, newtonIter, newtonScale, bootstrapDepth int, B float64) (*HEData, error) {
 	denom := float64(ct.Size()) * B
 
 	// Approximate variance
