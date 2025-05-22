@@ -14,7 +14,7 @@ import (
 
 func main() {
 	engine := engine.NewHEEngine(config.NewParameters(16, 11, 40, true))
-	EVAL_NUM := 10
+	EVAL_NUM, B := 10, 20.0
 	ageSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 0)
 	hpwSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 12)
 	eduSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 4)
@@ -61,14 +61,14 @@ func main() {
 	for i := 0; i < int(EVAL_NUM); i++ {
 		fmt.Println("[============ Age Test ============]")
 		TIME := time.Now()
-		zScoreNorm1, _ := engine.ZScoreNorm(age)
+		zScoreNorm1, _ := engine.ZScoreNorm(age, 100.0)
 		AGE_ZNORM_TIME := time.Since(TIME)
 		zSNAge, _ := engine.Decrypt(zScoreNorm1)
 
 		fmt.Println("Age ZNorm", zSNAge[0:1], utils.ZScoreNorm(ageSlice)[:1], AGE_ZNORM_TIME)
 
 		TIME = time.Now()
-		skew1, _ := engine.Skewness(age)
+		skew1, _ := engine.Skewness(age, B)
 		AGE_SKEW_TIME := time.Since(TIME)
 		skewAge, _ := engine.Decrypt(skew1)
 		AgeSkew_MRE[i] = math.Abs(skewAge[0]-skew_age) / math.Abs(skew_age)
@@ -77,7 +77,7 @@ func main() {
 		fmt.Println("Age skewResult", skewAge[0], math.Abs(skewAge[0]-skew_age), math.Abs(skewAge[0]-skew_age)/math.Abs(skew_age), AGE_SKEW_TIME)
 
 		TIME = time.Now()
-		kurt1, _ := engine.Kurtosis(age)
+		kurt1, _ := engine.Kurtosis(age, B)
 		AGE_KURT_TIME := time.Since(TIME)
 		kurtAge, _ := engine.Decrypt(kurt1)
 
@@ -87,7 +87,7 @@ func main() {
 		fmt.Println("Age kurtResult", kurtAge[0], math.Abs(kurtAge[0]-kurt_age), math.Abs(kurtAge[0]-kurt_age)/math.Abs(kurt_age), AGE_KURT_TIME)
 
 		TIME = time.Now()
-		ceffvar1, _ := engine.CoeffVar(age)
+		ceffvar1, _ := engine.CoeffVar(age, B)
 		AGE_CV_TIME := time.Since(TIME)
 		ceffvarAge, _ := engine.Decrypt(ceffvar1)
 		AgeCV_MRE[i] = math.Abs(ceffvarAge[0]-cfvar_age) / math.Abs(cfvar_age)
@@ -97,14 +97,14 @@ func main() {
 
 		fmt.Println("[============ HPW Test ============]")
 		TIME = time.Now()
-		zScoreNorm2, _ := engine.ZScoreNorm(hpw)
+		zScoreNorm2, _ := engine.ZScoreNorm(hpw, 100.0)
 		HPW_ZNORM_TIME := time.Since(TIME)
 		zSNHpw, _ := engine.Decrypt(zScoreNorm2)
 
 		fmt.Println("HPW ZNorm", zSNHpw[0:1], utils.ZScoreNorm(zSNHpw)[:1], HPW_ZNORM_TIME)
 
 		TIME = time.Now()
-		skew2, _ := engine.Skewness(hpw)
+		skew2, _ := engine.Skewness(hpw, B)
 		HPW_SKEW_TIME := time.Since(TIME)
 		skewHpw, _ := engine.Decrypt(skew2)
 
@@ -114,7 +114,7 @@ func main() {
 		fmt.Println("HPW skewResult", skewHpw[0], math.Abs(skewHpw[0]-skew_hpw), math.Abs(skewHpw[0]-skew_hpw)/math.Abs(skew_hpw), HPW_SKEW_TIME)
 
 		TIME = time.Now()
-		kurt2, _ := engine.Kurtosis(hpw)
+		kurt2, _ := engine.Kurtosis(hpw, B)
 		HPW_KURT_TIME := time.Since(TIME)
 		kurtHpw, _ := engine.Decrypt(kurt2)
 		HPWKurt_MRE[i] = math.Abs(kurtHpw[0]-kurt_hpw) / math.Abs(kurt_hpw)
@@ -123,7 +123,7 @@ func main() {
 		fmt.Println("HPW kurtResult", kurtHpw[0], math.Abs(kurtHpw[0]-kurt_hpw), math.Abs(kurtHpw[0]-kurt_hpw)/math.Abs(kurt_hpw), HPW_KURT_TIME)
 
 		TIME = time.Now()
-		ceffvar2, _ := engine.CoeffVar(hpw)
+		ceffvar2, _ := engine.CoeffVar(hpw, B)
 		HPW_CV_TIME := time.Since(TIME)
 		ceffvarAHpw, _ := engine.Decrypt(ceffvar2)
 
@@ -134,14 +134,14 @@ func main() {
 
 		fmt.Println("[============ Edu Test ============]")
 		TIME = time.Now()
-		zScoreNorm3, _ := engine.ZScoreNorm(edu)
+		zScoreNorm3, _ := engine.ZScoreNorm(edu, 100.0)
 		EDU_ZNORM_TIME := time.Since(TIME)
 		zSNEdu, _ := engine.Decrypt(zScoreNorm3)
 
 		fmt.Println("Edu ZNorm", zSNEdu[0:1], utils.ZScoreNorm(zSNEdu)[:1], EDU_ZNORM_TIME)
 
 		TIME = time.Now()
-		skew3, _ := engine.Skewness(edu)
+		skew3, _ := engine.Skewness(edu, B)
 		EDU_SKEW_TIME := time.Since(TIME)
 		skewEdu, _ := engine.Decrypt(skew3)
 
@@ -151,7 +151,7 @@ func main() {
 		fmt.Println("Edu skewResult", skewEdu[0], math.Abs(skewEdu[0]-skew_edu), math.Abs(skewEdu[0]-skew_edu)/math.Abs(skew_edu), EDU_SKEW_TIME)
 
 		TIME = time.Now()
-		kurt3, _ := engine.Kurtosis(edu)
+		kurt3, _ := engine.Kurtosis(edu, B)
 		EDU_KURT_TIME := time.Since(TIME)
 		kurtEdu, _ := engine.Decrypt(kurt3)
 
@@ -161,7 +161,7 @@ func main() {
 		fmt.Println("Edu kurtResult", kurtEdu[0], math.Abs(kurtEdu[0]-kurt_edu), math.Abs(kurtEdu[0]-kurt_edu)/math.Abs(kurt_edu), EDU_KURT_TIME)
 
 		TIME = time.Now()
-		ceffvar3, _ := engine.CoeffVar(edu)
+		ceffvar3, _ := engine.CoeffVar(edu, B)
 		EDU_CV_TIME := time.Since(TIME)
 		ceffvarEdu, _ := engine.Decrypt(ceffvar3)
 
@@ -173,7 +173,7 @@ func main() {
 		fmt.Println("[============ Corr Test ============]")
 		_, corrr, _ := utils.Correlation(ageSlice, hpwSlice)
 		TIME = time.Now()
-		corr, _ := engine.PCorrCoeff(age, hpw)
+		corr, _ := engine.PCorrCoeff(age, hpw, B)
 		CORR_TIME := time.Since(TIME)
 		corrtResult, _ := engine.Decrypt(corr)
 
@@ -184,7 +184,7 @@ func main() {
 
 		_, corrr, _ = utils.Correlation(ageSlice, eduSlice)
 		TIME = time.Now()
-		corr, _ = engine.PCorrCoeff(age, edu)
+		corr, _ = engine.PCorrCoeff(age, edu, B)
 		CORR_TIME = time.Since(TIME)
 		corrtResult, _ = engine.Decrypt(corr)
 		AGE_EDU_CORR_MRE[i] = math.Abs(corrtResult[0]-corrr) / math.Abs(corrr)

@@ -72,7 +72,7 @@ func main() {
 
 		// [3] CryptoInvSqrt method
 		start = time.Now()
-		cryptoInvSqrt, _ := engine.CryptoInvSqrt(ct)
+		cryptoInvSqrt, _ := engine.CryptoInvSqrt(ct, B)
 		elapsed = time.Since(start)
 		cisResult, _ := engine.Decrypt(cryptoInvSqrt)
 		_, cisMRE := utils.CheckMRE(invS, invS, cisResult, ct.Size())
