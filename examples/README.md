@@ -20,7 +20,8 @@ These datasets are provided in the following CSV files:
 
 
 ## Experiment 1: Performance Comparison of Inverse Square Root Computation
-We compare the performance of our inverse square root computation against two prior methods: Panda et al. [3] and HEaaN-STAT [4].
+We compare the performance of our inverse square root computation against two prior methods: Panda et al. [3] and HEaaN-STAT [4]. #BTS denotes
+the number of bootstrapping operations, and Runtime (s) is measured using single-core execution. All values are averaged over 10 runs, with standard deviations shown in parentheses. 
 
 ### Table. Performance comparison of inverse square root computation over the input domain [0.001, 100]. The parameter `B` denotes the constant scaling factor. All values are averaged over ten runs; values in parentheses represent standard deviations.
 
