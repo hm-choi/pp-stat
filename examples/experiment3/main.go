@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	engine := engine.NewHEEngine(config.NewParameters(16, 11, 40, true))
+	engine := engine.NewHEEngine(config.NewParameters(10, 11, 40, true))
 	EVAL_NUM, B := 10, 50.0
 	ageSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 0)
 	hpwSlice, _ := utils.ReadCSV("../../examples/dataset/adult_dataset.csv", 12)
@@ -34,6 +34,8 @@ func main() {
 	_, _, skew_edu := utils.Skewness(eduSlice)
 	_, _, kurt_edu := utils.Kurtosis(eduSlice)
 	_, _, cfvar_edu := utils.CoeffVar(eduSlice)
+
+	fmt.Println("utils.Mean(ageSlice), utils.Mean(hpwSlice), utils.Mean(eduSlice), ", utils.Mean(ageSlice), utils.Mean(hpwSlice), utils.Mean(eduSlice))
 
 	AgeNorm_MRE, AgeNorm_MAE, AgeNorm_TIME := make([]float64, EVAL_NUM), make([]float64, EVAL_NUM), make([]float64, EVAL_NUM)
 	AgeSkew_MRE, AgeSkew_MAE, AgeSkew_TIME := make([]float64, EVAL_NUM), make([]float64, EVAL_NUM), make([]float64, EVAL_NUM)
@@ -180,7 +182,7 @@ func main() {
 		AgeHPW_CORR_MRE[i] = math.Abs(corrtResult[0]-corrr) / math.Abs(corrr)
 		AgeHPW_CORR_MAE[i] = math.Abs(corrtResult[0] - corrr)
 		AgeHPW_CORR_TIME[i] = float64(CORR_TIME.Seconds())
-		fmt.Println("corrtResult(AGE vs HPW)", corrtResult[0], math.Abs(corrtResult[0]-corrr), math.Abs(corrtResult[0]-corrr)/math.Abs(corrr), CORR_TIME)
+		fmt.Println("corrtResult(AGE vs HPW)", corrtResult[0], corrr, math.Abs(corrtResult[0]-corrr), math.Abs(corrtResult[0]-corrr)/math.Abs(corrr), CORR_TIME)
 
 		_, corrr, _ = utils.Correlation(ageSlice, eduSlice)
 		TIME = time.Now()
@@ -190,7 +192,7 @@ func main() {
 		AGE_EDU_CORR_MRE[i] = math.Abs(corrtResult[0]-corrr) / math.Abs(corrr)
 		AGE_EDU_CORR_MAE[i] = math.Abs(corrtResult[0] - corrr)
 		AGE_EDU_CORR_TIME[i] = float64(CORR_TIME.Seconds())
-		fmt.Println("corrtResult(AGE vs EDU)", corrtResult[0], math.Abs(corrtResult[0]-corrr), math.Abs(corrtResult[0]-corrr)/math.Abs(corrr), CORR_TIME)
+		fmt.Println("corrtResult(AGE vs EDU)", corrtResult[0], corrr, math.Abs(corrtResult[0]-corrr), math.Abs(corrtResult[0]-corrr)/math.Abs(corrr), CORR_TIME)
 
 		ageZNorm := utils.ZScoreNorm(ageSlice)
 		hpwZNorm := utils.ZScoreNorm(hpwSlice)
