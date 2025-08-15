@@ -1,5 +1,14 @@
 # PP-STAT: An Efficient Privacy-Preserving Statistical Analysis Framework using Homomorphic Encryption
 
+# ![Overview of the PP-STAT](./figure/overview.png)
+
+Official repository for **PP-STAT: An Efficient Privacy-Preserving Statistical Analysis Framework using Homomorphic Encryption**  
+by
+Hyunmin Choi<sup>1,2</sup>,
+
+<sup>1</sup> NAVER Cloud, South Korea
+<sup>2</sup> Sungkyunkwan University, South Korea
+
 PP-STAT is an experimental toolkit for privacy-preserving statistical analysis using Homomorphic Encryption. It includes efficient implementations of:
 
 - Z-Score Normalization
@@ -7,8 +16,6 @@ PP-STAT is an experimental toolkit for privacy-preserving statistical analysis u
 - Kurtosis
 - Coefficient of Variation (CV)
 - Pearson Correlation Coefficient (PCC)
-
-
 
 ## Abstract
 With the widespread adoption of cloud computing, the need for outsourcing statistical analysis to third-party platforms is growing rapidly. However, handling sensitive data such as medical records and financial information in cloud environments raises serious privacy concerns. In this paper, we present PP-STAT, a novel and efficient Homomorphic Encryption (HE)-based framework for privacy-preserving statistical analysis. HE enables computations to be performed directly on encrypted data without revealing the underlying plaintext. PP-STAT supports advanced statistical measures, including Z-score normalization, skewness, kurtosis, coefficient of variation, and Pearson correlation coefficient, all computed securely over encrypted data. To improve efficiency, PP-STAT introduces
